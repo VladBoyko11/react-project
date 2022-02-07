@@ -1,0 +1,71 @@
+.usersContainer{
+    width: 68vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.user{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 32vw;
+    background-color: rgb(190, 112, 230);
+    margin-bottom: 3vh;
+}
+.userLogo {
+    width: 12vw;
+}
+.userName {
+    width: 50vw;
+}
+.userEducation{
+    margin-top: 2vh;
+    width: 100%;
+    font-size: 1.2rem;
+}
+.userLocation{
+    margin-top: 2vh;
+    width: 100%;
+    font-size: 1.2rem;
+}
+.userButton{
+    background-color: rgb(190, 112, 230);
+    border: 1px solid black;
+    outline: none;
+    width: 12vw;
+    height: 5vh;
+    margin: 0.5rem;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.userButtonUnFollow:hover{
+    border: 3px solid rgb(202, 2, 2);
+    color: rgb(202, 2, 2);
+}
+.userButtonFollow:hover{
+    border: 3px solid rgb(0, 212, 32);
+    color: rgb(0, 212, 32);
+}
+.followed {
+    width: 60%;
+    font-size: 1.1rem;
+    text-align: center;
+}
+.selectedPage{
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+.pageCount{
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+}

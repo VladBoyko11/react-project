@@ -1,0 +1,56 @@
+.messages{
+    font-size: 1.4rem;
+    width: 70vw;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+}
+.message{
+    padding: 5px;
+    width: 50vw;
+    margin: 15px auto;
+    border: 2px solid rgb(190, 112, 230);
+    box-sizing: content-box;
+}
+.person{
+    color: black;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0 0 5vw;
+    font-size: 1.5rem;
+    width: 100%;
+    text-decoration: center;
+}
+.persons{
+    width: 20vw;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: center;
+}
+.messageFromUser{
+    width: 100%;
+}
+.formForNewMessage{
+    padding: 5px;
+    width: 51vw;
+    margin: 10px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.inputMessage{
+    width: 38vw;
+    height: 7vh;
+    font-size: 1.2rem;
+    resize: none;
+}
+.submitButton{
+    width: 7vw;
+    height: 5vh;
+    background-color: rgb(190, 112, 230);
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
