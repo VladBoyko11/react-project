@@ -24,7 +24,6 @@ class Main extends React.Component {
     return (
       <main>
         <Navbar />
-        <div>Some Changes</div>
         <div className={style.main}>
           <Routes>
             <Route
