@@ -23,7 +23,7 @@ const BasketPage: React.FC<BasketPagePropsType> = (props) => {
     return (
         <div className="d-flex flex-wrap justify-content-center">
             <h1 className={style.shoppingCart}>Shopping cart</h1>
-            <div className={'d-flex flex-wrap col-6'}>
+            <div className={style.basketDevicesContainer}>
                 {Array.isArray(props.devices) ? props.devices.map((device: Device) => {
                     const basketDevice = props.basketDevices.find(basketDevice => {
                         if(basketDevice.deviceId === device.id) {

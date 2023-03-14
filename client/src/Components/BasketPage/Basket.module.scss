@@ -77,6 +77,7 @@
     border: 1px solid #b9b9b9;
     border-radius: 5px;
     padding: 3px;
+    width: 100%;
 }
 .devicePrice{
     position: absolute;
@@ -86,4 +87,10 @@
 .cardDeviceRightSide{
     width: 20%;
     position: relative;
+}
+
+.basketDevicesContainer{
+    display: flex;
+    flex-wrap: wrap;
+    width: 50vw;
 }
