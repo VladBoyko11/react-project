@@ -10,7 +10,7 @@ import React from 'react';
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <div>NEXT JS BRANCH</div>
+      <div>NEXT JS BRANCH sda</div>
       <BrowserRouter>
           <Header />
           <Main store={store}/>
