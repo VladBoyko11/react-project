@@ -1,5 +1,4 @@
 import React from "react";
-import {Button, Form} from "react-bootstrap";
 import {Field, FormSubmitHandler, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from "../common/FormControl";
 import {connect, ConnectedProps} from "react-redux";
@@ -20,13 +19,13 @@ const AddNewBrand: React.FC<AddNewBrandPropsType> = (props) => {
 
 const AddNewBrandForm: React.FC<InjectedFormProps<Brand>> = ({handleSubmit}) => {
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group>
-                <Form.Label htmlFor="brand">New brand</Form.Label>
+        <form className="" onSubmit={handleSubmit}>
+            <form>
+                <label htmlFor="brand">New brand</label>
                 <Field id="brand" placeholder='brand' name='brand' component={Input}/>
-            </Form.Group>
-            <Button className={'btn-warning'} type='submit'>Create</Button>
-        </Form>
+            </form>
+            <button className={'btn-warning'} type='submit'>Create</button>
+        </form>
     )
 }
 

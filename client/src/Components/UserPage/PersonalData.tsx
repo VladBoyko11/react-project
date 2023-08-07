@@ -2,11 +2,11 @@ import React, {useState} from "react";
 import {connect, ConnectedProps} from "react-redux";
 import {setNewEmail} from "../../redux/authSlice";
 import {Field, FormSubmitHandler, InjectedFormProps, reduxForm} from "redux-form";
-import {Form} from "react-bootstrap";
 import {Input} from "../common/FormControl";
 import style from './User.module.scss'
 import {checkEmail} from "../common/Validators/Validators";
 import { RootState } from "../../redux/store";
+import { FormGroup, FormLabel } from "@mui/material";
 
 const PersonalData: React.FC<PersonalDataPropsType> = (props) => {
     const [formEditEmailActive, setFormEditEmailActive] = useState(false)
@@ -30,14 +30,14 @@ const PersonalData: React.FC<PersonalDataPropsType> = (props) => {
 }
 
 const EditEmailForm:  React.FC<InjectedFormProps> = ({handleSubmit, error}) => {
-    return <Form onSubmit={handleSubmit} className={'w-75'}>
-        <Form.Group controlId="formNewEmail">
-            <Form.Label>New email: </Form.Label>
+    return <form onSubmit={handleSubmit} className={'w-75'}>
+        <FormGroup>
+            <FormLabel>New email: </FormLabel>
             {error && <div className={'bg-danger'}>ERROR</div>}
             <Field className={'w-50'} placeholder='enter your new email' name='newEmail' component={Input} validate={[checkEmail]}/>
-        </Form.Group>
+        </FormGroup>
         <button type='submit' className={style.submitBtn}>Enter</button>
-    </Form>
+    </form>
 }
 
 const EditEmailReduxForm = reduxForm({

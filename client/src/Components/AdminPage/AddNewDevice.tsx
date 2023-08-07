@@ -1,5 +1,4 @@
 import React from "react";
-import { Button, Form } from "react-bootstrap";
 import { Field, FormSubmitHandler, InjectedFormProps, reduxForm } from "redux-form";
 import { Input } from "../common/FormControl";
 import { connect, ConnectedProps } from "react-redux";
@@ -34,38 +33,38 @@ const AddNewDeviceForm: React.FC<InjectedFormProps<Device>> = ({handleSubmit}) =
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group>
-        <Form.Label htmlFor="name">Device name</Form.Label>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="name">Device name</label>
         <Field id="name" placeholder="name" name="deviceName" component={Input} />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label htmlFor="price">Device price</Form.Label>
+      </div>
+      <div>
+        <label htmlFor="price">Device price</label>
         <Field id="price" placeholder="price" name="devicePrice" component={Input} />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label htmlFor="brand">Brand</Form.Label>
+      </div>
+      <div>
+        <label htmlFor="brand">Brand</label>
         <Field id="brand" placeholder="brand" name="deviceBrand" component={Input} />
-      </Form.Group>
-      <Form.Group >
-        <Form.Label htmlFor="type">Type</Form.Label>
+      </div>
+      <div >
+        <label htmlFor="type">Type</label>
         <Field id="type" placeholder="type" name="deviceType" component={Input} />
-      </Form.Group>
-      <Form.Group >
-        <Form.Label className={"me-3 form-label"} htmlFor={"customFile"}>
+      </div>
+      <div >
+        <label className={"me-3 form-label"} htmlFor={"customFile"}>
           Img
-        </Form.Label>
+        </label>
         <input
           type="file"
           className="'mt-1 mb-2 form-control"
           id="customFile"
           onChange={selectPhoto}
         />
-      </Form.Group>
-      <Button className={"btn-warning"} type="submit">
+      </div>
+      <button className={"btn-warning"} type="submit">
         Create
-      </Button>
-    </Form>
+      </button>
+    </form>
   );
 };
 

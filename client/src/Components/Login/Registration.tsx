@@ -3,9 +3,9 @@ import {Field, FormSubmitHandler, InjectedFormProps, reduxForm} from "redux-form
 import {registration} from "../../redux/authSlice";
 import {connect, ConnectedProps} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Form, Button} from 'react-bootstrap'
 import {Input} from "../common/FormControl";
 import { RootState } from "../../redux/store";
+import { Button, FormGroup, FormLabel } from "@mui/material";
 
 const Registration: React.FC<RegistrationPropsType> = (props) => {
 
@@ -29,17 +29,18 @@ const Registration: React.FC<RegistrationPropsType> = (props) => {
 
 const LoginForm: React.FC<InjectedFormProps> = (props) => {
     return (
-        <Form onSubmit={props.handleSubmit}>
-            <Form.Group>
-                <Form.Label htmlFor="email">Email address</Form.Label>
+        <form onSubmit={props.handleSubmit}>
+            <FormGroup>
+                <FormLabel htmlFor="email">Email address</FormLabel>
                 <Field id="email" placeholder='email' name='email' component={Input}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label htmlFor="password">Password</Form.Label>
+            </FormGroup>
+            <FormGroup>
+                <FormLabel htmlFor="password">Password</FormLabel>
                 <Field id="password" placeholder='password' name='password' component={Input}/>
-            </Form.Group>
-            <div> <Button type='submit' variant="success">Registration</Button> </div>
-        </Form>
+            </FormGroup>
+            {/* <div> <Button type='submit' variant="success">Registration</Button> </div> */}
+            <div> <Button type='submit'>Registration</Button> </div>
+        </form>
     )
 }
 

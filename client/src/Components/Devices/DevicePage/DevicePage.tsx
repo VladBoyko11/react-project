@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Field, FormSubmitHandler, InjectedFormProps, reduxForm } from "redux-form";
-import { Button, Form } from "react-bootstrap";
 import RatingStars from "../../common/RatingStars/RatingStars";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { setNotification } from "../../../redux/notificationSlice";
 import { addYourDeviceRatingThunk, getBrandThunk, getDeviceThunk } from "../../../redux/deviceSlice";
 import { DeviceInfo } from "../../../redux/types";
+import { Button, FormGroup, FormLabel } from "@mui/material";
 
 const DevicePage: React.FC<DevicePagePropsType> = (props) => {
   const [rateDeviceBoolean, setRateDeviceBoolean] = useState(false);
@@ -78,9 +78,9 @@ const DevicePage: React.FC<DevicePagePropsType> = (props) => {
 
 const AddRateDeviceForm: React.FC<InjectedFormProps> = ({ handleSubmit }) => {
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="newRate">
-        <Form.Label>Add your rating</Form.Label>
+    <form onSubmit={handleSubmit}>
+      <FormGroup>
+        <FormLabel>Add your rating</FormLabel>
         <Field
           className={"form-select"}
           name="rating"
@@ -98,11 +98,11 @@ const AddRateDeviceForm: React.FC<InjectedFormProps> = ({ handleSubmit }) => {
           <option value="9">9</option>
           <option value="10">10</option>
         </Field>
-      </Form.Group>
+      </FormGroup>
       <Button className={"btn-warning mt-2"} type="submit">
         Add your rating
       </Button>
-    </Form>
+    </form>
   );
 };
 

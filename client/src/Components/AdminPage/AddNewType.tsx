@@ -1,5 +1,4 @@
 import React from "react";
-import {Button, Form} from "react-bootstrap";
 import {Field, FormSubmitHandler, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from "../common/FormControl";
 import {connect, ConnectedProps} from "react-redux";
@@ -21,13 +20,13 @@ const AddNewType: React.FC<AddNewTypeProps> = (props) => {
 
 const AddNewTypeForm: React.FC<InjectedFormProps<Type>> = ({handleSubmit}) => {
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group>
-                <Form.Label htmlFor="type">New type</Form.Label>
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="type">New type</label>
                 <Field id="type" placeholder='type' name='type' component={Input}/>
-            </Form.Group>
-            <Button className={'btn-warning'} type='submit'>Create</Button>
-        </Form>
+            </div>
+            <button className={'btn-warning'} type='submit'>Create</button>
+        </form>
     )
 }
 

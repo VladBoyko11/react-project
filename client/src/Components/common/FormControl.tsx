@@ -1,5 +1,5 @@
+import { FormControl } from "@mui/material"
 import React from "react"
-import {Form} from "react-bootstrap";
 
 // export const Textarea = ({input, meta, ...props}) => {
 //     return (
@@ -24,7 +24,7 @@ import {Form} from "react-bootstrap";
 export const Input = ({input, meta, ...props}: any) => {
     return (
         <div className={'mb-3'}>
-            <Form.Control {...input} {...props} />
+            <FormControl {...input} {...props} />
             {/*{meta.error && meta.touched && <div><span className={style.error}>{meta.error}</span></div>}*/}
         </div>
     )

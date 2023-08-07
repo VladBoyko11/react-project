@@ -11,20 +11,6 @@ type DevicesPropsType = {
     basketId?: number
     btnSelectBrand(brandId: number, toggleCheckboxBtn: boolean): void
     onPageChanged(page: number): void
-    // getOneDevice({deviceId}: {deviceId: number}): void
-    // setNotification(message: string, toggleNotification: boolean): void
-    // deleteDeviceFromBasket({basketId, deviceId}: {basketId: number, deviceId: number }): void
-    // getDevicesFromBasket({basketId}: {basketId: number}): void
-    // getDevicesThunk({brandId, typeId, limit, page}: {
-    //     brandId?: number | undefined;
-    //     typeId?: number | undefined;
-    //     limit: number;
-    //     page: number;
-    // }): void
-    // addDeviceToBasket({deviceId, basketId}: {
-    //     deviceId: number;
-    //     basketId: number;
-    // }): void
 }
 
 const Devices: React.FC<DevicesPropsType> = (props) => {

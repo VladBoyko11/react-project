@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import style from './Header.module.scss'
 import {NavLink, useNavigate} from "react-router-dom";
 import {connect, ConnectedProps} from "react-redux";
-import {Button} from "react-bootstrap";
 import {auth} from "../../redux/authSlice";
 
 import { faBars, faCircleRight, faHouse, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +11,7 @@ import {setBasketThunk} from "../../redux/basketSlice";
 import { RootState } from "../../redux/store";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Type } from "../../redux/types";
+import { Button } from "@mui/material";
 
 const Header: React.FC<HeaderPropsType> = (props) => {
 

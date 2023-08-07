@@ -1,5 +1,4 @@
 import React from "react";
-import {Button} from "react-bootstrap";
 import {Route, useNavigate, Routes} from "react-router-dom";
 import AddNewDevice from "./AddNewDevice";
 import AddNewType from "./AddNewType";
@@ -16,12 +15,12 @@ const AdminPage: React.FC = () => {
         <div className={'d-flex flex-wrap'}>
             <h2 className={'w-100 text-center'}>ADMIN PAGE</h2>
             <div className={'navbar w-25 border-top border-end h-25'}>
-                <Button className='btn-warning m-2 w-100 d-flex' onClick={() => {
-                    redirectToSomePage('/admin-page/add-new-device')}}>Add new device</Button>
-                <Button className='btn-warning m-2 w-100 mb-2 d-flex' onClick={() => {
-                    redirectToSomePage('/admin-page/add-new-type')}}>Add new type</Button>
-                <Button className='btn-warning m-2 w-100 mb-2 d-flex' onClick={() => {
-                    redirectToSomePage('/admin-page/add-new-brand')}}>Add new brand</Button>
+                <button className='btn-warning m-2 w-100 d-flex' onClick={() => {
+                    redirectToSomePage('/admin-page/add-new-device')}}>Add new device</button>
+                <button className='btn-warning m-2 w-100 mb-2 d-flex' onClick={() => {
+                    redirectToSomePage('/admin-page/add-new-type')}}>Add new type</button>
+                <button className='btn-warning m-2 w-100 mb-2 d-flex' onClick={() => {
+                    redirectToSomePage('/admin-page/add-new-brand')}}>Add new brand</button>
             </div>
             <div className={'ms-5'}>
                 <Routes >

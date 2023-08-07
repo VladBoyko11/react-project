@@ -4,7 +4,6 @@ import DevicePage from "./DevicePage";
 import {useNavigate, useParams} from "react-router-dom";
 import {addYourDeviceRatingThunk, getBrandThunk, getDeviceThunk} from "../../../redux/deviceSlice";
 import {setNotification} from "../../../redux/notificationSlice";
-// import {getOneDevice, getYourRatings} from "../../../redux/authSlice";
 import { RootState } from "../../../redux/store";
 
 const DevicePageContainer: React.FC<DevicePageContainerPropsType> = (props) => {

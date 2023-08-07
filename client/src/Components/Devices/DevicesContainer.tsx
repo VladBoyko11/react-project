@@ -8,7 +8,6 @@ import {
 } from '../../redux/deviceSlice'
 import {connect, ConnectedProps } from "react-redux";
 import {useParams} from "react-router-dom";
-// import Preloader from "../Preloader/Preloader";
 import {addDeviceToBasket, deleteDeviceFromBasket, getDevicesFromBasket, getOneDevice} from "../../redux/basketSlice";
 import {setNotification} from "../../redux/notificationSlice";
 import { RootState } from "../../redux/store";
