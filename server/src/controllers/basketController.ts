@@ -4,9 +4,10 @@ import { NextFunction, Request, Response } from 'express';
 
 class BasketController {
     async getBasket(req: Request, res: Response, next: NextFunction) {
-        // const {userId} = req.params
-        // const basket = await Basket.findOne({where: {userId}})
-        // return res.json({id: basket.id})
+        const {userId} = req.params
+        const basket = await Basket.findOne({where: {userId}})
+        if(basket) return res.json({id: basket.id})
+        else return res.json('basket is not found')
     }
     async getBasketDevices(req: Request, res: Response, next: NextFunction) {
         const {basketId} = req.params
