@@ -1,12 +1,11 @@
-require('dotenv').config()
-const express = require('express')
-const sequelize = require('./db')
-const models = require('./models/models')
-const cors = require('cors')
-const fileUpload = require('express-fileupload')
-const router = require('./routes/index')
-const errorHandler = require('./middleware/ErrorHandlingMiddleware')
-const path = require('path')
+import * as dotenv from 'dotenv'
+import express from 'express'
+import sequelize from './db'
+import cors from 'cors'
+import fileUpload from 'express-fileupload'
+import router from './routes/index'
+import errorHandler from './middleware/ErrorHandlingMiddleware'
+import path from 'path'
 
 const PORT = process.env.PORT || 5000
 
@@ -18,12 +17,13 @@ app.use(fileUpload({}))
 app.use('/api', router)
 
 // Обработка ошибок, последний Middleware
-app.use(errorHandler)
+// app.use(errorHandler)
 
 const start = async () => {
     try {
         await sequelize.authenticate()
         await sequelize.sync()
+        dotenv.config()
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
     } catch (e) {
         console.log(e)

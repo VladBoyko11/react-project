@@ -1,18 +1,19 @@
 const {Rating, Device} = require('../models/models')
-const ApiError = require('../error/ApiError');
+import { NextFunction, Request, Response } from 'express';
+import ApiError from '../error/ApiError';
 
 class RatingController {
-    async getDeviceRating(req, res, next) {
+    async getDeviceRating(req: Request, res: Response, next: NextFunction) {
         const {deviceID} = req.params
         const rating = await Rating.findAndCountAll({where: {deviceId: deviceID}})
         return res.json(rating)
     }
-    async getUserRatings(req, res, next) {
+    async getUserRatings(req: Request, res: Response, next: NextFunction) {
         const {userId} = req.params
         const ratings = await Rating.findAll({where: {userId}})
         return res.json(ratings)
     }
-    async addDeviceRating(req, res, next) {
+    async addDeviceRating(req: Request, res: Response, next: NextFunction) {
         const {userId, deviceId, rate} = req.body
         const id = deviceId
         const candidate = await Rating.findOne({where: {userId, deviceId}})
@@ -24,7 +25,7 @@ class RatingController {
         }
         const deviceRatingObject = await Rating.findAndCountAll({where: {deviceId}})
         let deviceRatings = 0
-        deviceRatingObject.rows.forEach(value => {
+        deviceRatingObject.rows.forEach((value: any) => {
             deviceRatings = deviceRatings + value.rate
         })
         let rating = Math.round(deviceRatings / deviceRatingObject.count)
@@ -33,4 +34,4 @@ class RatingController {
     }
 }
 
-module.exports = new RatingController()
+export default new RatingController()
