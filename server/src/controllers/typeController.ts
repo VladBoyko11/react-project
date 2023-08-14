@@ -1,26 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-
-import { Type, Device, DeviceInfo } from '../models/models';
-import ApiError from '../error/ApiError';
+import { prisma } from '../index'
 
 class TypeController {
     async create(req: Request, res: Response, next: NextFunction) {
-        // const {name} = req.body
-        // const type = await Type.create({name})
-        // return res.json({id: type.id, name: type.name})
+        const { name } = req.body
+        const type = await prisma.type.create({ data: { name: String(name) } })
+        return res.json({ id: type.id, name: type.name })
     }
     async getAll(req: Request, res: Response, next: NextFunction) {
-        const types = await Type.findAll()
-        return res.json(types)
+        const types = await prisma.type.findMany()
+        if(types) return res.json(types)
+        else return res.json('Types are not found')
     }
     async getOne(req: Request, res: Response, next: NextFunction) {
-        // const {name} = req.params
-        // const type = await Type.findOne(
-        //     {
-        //         where: {name}
-        //     },
-        // )
-        // return res.json({id: type.id, name: type.name})
+        const { name } = req.params
+        const type = await prisma.type.findUnique({where: { name }})
+        if (type) return res.json({ id: type.id, name: type.name })
+        else return res.json('Type is not found')
     }
 }
 
