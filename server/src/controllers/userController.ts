@@ -1,10 +1,10 @@
 import ApiError from '../error/ApiError';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User, Basket, Device } from '../models/models';
 import { NextFunction, Request, Response } from 'express';
+import {prisma} from '../index'
 
-const sercetKey = 'random_secret_key123'
+const sercetKey = "random_secret_key123"
 
 const generateJwt = (id: number, email: string, role: string) => {
     return jwt.sign(
@@ -20,12 +20,12 @@ class UserController {
         if (!email || !password) {
             return next(ApiError.badRequest('Некорректный email или password'))
         }
-        const candidate = await User.findOne({where: {email}})
+        const candidate = await prisma.user.findUnique({where: {email}})
         if (candidate) {
             return next(ApiError.badRequest('Пользователь с таким email уже существует'))
         }
         const hashPassword = await bcrypt.hash(password, 5)
-        const user = await User.create({email, role, password: hashPassword})
+        const user = await prisma.user.create({data: {email, role, password: hashPassword}})
         // const basket = await Basket.create({userId: user.id})
         const token = user.id ? generateJwt(user.id, user.email, user.role) : null
         return res.json({token, email, role, password, id: user.id})
@@ -33,7 +33,7 @@ class UserController {
 
     async login(req: Request, res: Response, next: NextFunction) {
         const {email, password} = req.body
-        const user = await User.findOne({where: {email}})
+        const user = await prisma.user.findUnique({where: {email}})
         if (!user) {
             return next(ApiError.internal('Пользователь не найден'))
         }
@@ -51,7 +51,7 @@ class UserController {
     }
     async setNewEmail(req: Request, res: Response, next: NextFunction) {
         const {email, id} = req.body
-        await User.update({email} ,{where: {id: id}})
+        await prisma.user.update({where: {id: id}, data: {email}})
         res.json('update successfully')
     }
 }
