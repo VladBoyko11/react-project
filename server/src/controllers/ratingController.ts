@@ -32,8 +32,8 @@ class RatingController {
         const deviceRatings = await prisma.rating.findMany({where: {deviceId}})
         const sumDeviceRatings = deviceRatings.map(value => value.rate).reduce((acc, current) => acc + current)
         const rating = Math.round(sumDeviceRatings / deviceRatings.length)
-        await prisma.device.update({where: {id: id}, data: {rating}})
-        return res.json(rating)
+        const newDevice = await prisma.device.update({where: {id: id}, data: {rating}})
+        return res.json(newDevice)
     }
 }
 

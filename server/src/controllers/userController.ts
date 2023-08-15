@@ -28,7 +28,7 @@ class UserController {
         const user = await prisma.user.create({data: {email, role, password: hashPassword}})
         // const basket = await Basket.create({userId: user.id})
         const token = user.id ? generateJwt(user.id, user.email, user.role) : null
-        return res.json({token, email, role, password, id: user.id})
+        return res.json({token, email: user.email, role: user.role, password: user.password, id: user.id})
     }
 
     async login(req: Request, res: Response, next: NextFunction) {
@@ -42,7 +42,7 @@ class UserController {
             return next(ApiError.internal('Указан неверный пароль'))
         }
         const token = user.id ? generateJwt(user.id, user.email, user.role) : null
-        return res.json({token, role: user.role, id: user.id})
+        return res.json({token, email: user.email, role: user.role, password: user.password, id: user.id})
     }
 
     async check(req: Request, res: Response, next: NextFunction) {
@@ -51,8 +51,8 @@ class UserController {
     }
     async setNewEmail(req: Request, res: Response, next: NextFunction) {
         const {email, id} = req.body
-        await prisma.user.update({where: {id: id}, data: {email}})
-        res.json('update successfully')
+        const user = await prisma.user.update({where: {id: id}, data: {email}})
+        res.json({email: user.email})
     }
 }
 

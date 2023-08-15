@@ -5,7 +5,9 @@ export type Device = {
     rating?: number,
     img?: string,
     typeId?: number,
-    brandId?: number
+    brandId?: number,
+    title?: string,
+    description?: string
 }
 
 export type Basket = {

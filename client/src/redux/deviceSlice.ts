@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {deviceApi} from "../API/API";
-import { Brand, Device, DeviceInfo, Rating, Type } from "./types";
+import { Brand, Device, Rating, Type } from "./types";
 
 type deviceSliceType = {
     types: Array<Type>,
@@ -13,7 +13,6 @@ type deviceSliceType = {
     limit: number,
     currentPage: number,
     isFetching: boolean,
-    deviceDescriptions: Array<DeviceInfo>
 }
 
 const initialState: deviceSliceType = {
@@ -26,8 +25,7 @@ const initialState: deviceSliceType = {
     totalCount: 0,
     limit: 6,
     currentPage: 1,
-    isFetching: false,
-    deviceDescriptions: []
+    isFetching: false
 }
 
 const deviceSlice = createSlice({
@@ -52,7 +50,7 @@ const deviceSlice = createSlice({
         // setTypes(state, action: PayloadAction<Array<string>>) {
         //     state.types.push(...action.payload)
         // },
-        setType(state, action: PayloadAction<object>) {
+        setType(state, action: PayloadAction<Type>) {
             state.type = action.payload
         },
         // setDeviceDescriptions(state, action: PayloadAction<[]>) {
@@ -74,8 +72,8 @@ const deviceSlice = createSlice({
             state.device = action.payload
         })
         .addCase(getDevicesThunk.fulfilled, (state, action) => {
-            state.totalCount = action.payload.count
-            state.devices = action.payload.rows
+            state.totalCount = action.payload.length
+            state.devices = action.payload
         })
         .addCase(getBrandThunk.fulfilled, (state, action) => {
             state.brand = action.payload
@@ -90,7 +88,7 @@ const deviceSlice = createSlice({
             state.types = action.payload
         })
         .addCase(addYourDeviceRatingThunk.fulfilled, (state, action) => {
-            state.device.rating = action.payload
+            if(state.device) state.device.rating = action.payload
         })
     }
 })
@@ -103,19 +101,13 @@ export const getDeviceThunk = createAsyncThunk<Device, {deviceId: number}, {reje
     }
   )
 
-export const getDevicesThunk = createAsyncThunk<{
-    count: number,
-    rows: Array<Device>
-}, {brandId?: number, typeId?: number, limit: number, page: number}, {rejectValue: string}>(
+export const getDevicesThunk = createAsyncThunk<Device[], {brandId?: number, typeId?: number, limit: number, page: number}, {rejectValue: string}>(
     'getDevices',
     async function ({brandId, typeId, limit, page}) {
         // const dispatch = useAppDispatch()
         // dispatch(deviceSlice.actions.setToggleIsFetching(true))
         const response = await deviceApi.getDevices({brandId, typeId, limit, page})
-        return response.data as {
-            count: number,
-            rows: Array<Device>
-        }
+        return response.data as Device[]
     }
 )
 
@@ -127,11 +119,11 @@ export const toggleIsFetching = (data: boolean) => {
     return {type: 'setToggleIsFetching', data}
 }
 
-export const getBrandsThunk = createAsyncThunk<Array<Brand>, undefined, {rejectValue: string}>(
+export const getBrandsThunk = createAsyncThunk<Brand[], undefined, {rejectValue: string}>(
     'getBrandsThunk',
     async function () {
         const response = await deviceApi.getBrands()
-        return response.data as Array<Brand>
+        return response.data as Brand[]
     }
 )
 
@@ -145,11 +137,11 @@ export const getBrandThunk = createAsyncThunk<Brand, {brandId: number}, {rejectV
 
 export const deleteType = () => deviceSlice.actions.setType({})
 
-export const getTypesThunk = createAsyncThunk<Array<Type>, {typeName?: string}, {rejectValue: string}>(
+export const getTypesThunk = createAsyncThunk<Type[], {}, {rejectValue: string}>(
     'getTypes',
-    async function ({typeName}) {
-        const response = await deviceApi.getTypes({typeName})
-        return response.data as Array<Type>
+    async function () {
+        const response = await deviceApi.getTypes()
+        return response.data as Type[]
     }
 )
 
@@ -168,7 +160,8 @@ export const addYourDeviceRatingThunk = createAsyncThunk<number, {rating: number
     'addYourDeviceRating',
     async function ({rating, userId, deviceId}) {
         const response = await deviceApi.addYourDeviceRating(rating, userId, deviceId)
-        return response.data as number
+        if(response.data.rating) return response.data.rating
+        else return 0
     }
 )
 
