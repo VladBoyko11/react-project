@@ -41,6 +41,15 @@ class BasketController {
             return res.json({ basketId: device.basketId, deviceId: device.deviceId })
         }
     }
+    async changeCountOfProducts(req: Request, res: Response, next: NextFunction) {
+        const {countOfProducts} = req.body
+        const {deviceId} = req.params
+
+        const basketDevice = await prisma.basketDevice.update({where: {deviceId: Number(deviceId)}, data: {
+            countOfProducts: Number(countOfProducts)
+        }})
+        return res.json(basketDevice)
+    }
 }
 
 export default new BasketController()

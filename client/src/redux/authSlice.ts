@@ -57,7 +57,7 @@ const authSlice = createSlice({
         setToken(action.payload.token);
         if (action.payload.id) state.id = action.payload.id;
         if (action.payload.email) state.email = action.payload.email;
-        if (action.payload.password) state.password = action.payload.password;
+        // if (action.payload.password) state.password = action.payload.password;
         if (action.payload.role) state.role = action.payload.role;
         state.isAuth = true;
       })
@@ -82,14 +82,8 @@ export const login = createAsyncThunk<
   { email: string; password: string },
   { rejectValue: string }
 >("login", async function ({ email, password }) {
-  const response: AxiosResponse = await loginAPI.login(email, password);
-  return {
-    email,
-    password,
-    id: response.data.id,
-    token: response.data.token,
-    role: response.data.role,
-  } as Login;
+  const response = await loginAPI.login(email, password);
+  return response.data
 });
 
 export const registration = createAsyncThunk<
@@ -97,14 +91,8 @@ export const registration = createAsyncThunk<
   { email: string; password: string },
   { rejectValue: string }
 >("registration", async function ({ email, password }) {
-  const response: AxiosResponse = await loginAPI.registration(email, password);
-  return {
-    email,
-    password,
-    id: response.data.id,
-    token: response.data.token,
-    role: response.data.role,
-  } as Login;
+  const response = await loginAPI.registration(email, password);
+  return response.data
 });
 
 export const logout = () => (dispatch: AppDispatch) => {
@@ -120,12 +108,12 @@ export const logout = () => (dispatch: AppDispatch) => {
   setToken(undefined);
 };
 
-export const auth = createAsyncThunk<Login, object, { rejectValue: string }>(
+export const auth = createAsyncThunk<Omit<Login, 'password'>, object, { rejectValue: string }>(
   "auth",
   async function (_, { rejectWithValue }) {
     return loginAPI.auth().then((response) => {
       if (response.status === 200) {
-        return response.data as Login;
+        return response.data;
       } else {
         return rejectWithValue("response error");
       }
@@ -133,31 +121,31 @@ export const auth = createAsyncThunk<Login, object, { rejectValue: string }>(
   }
 );
 
-export const getYourRatings = createAsyncThunk< Array<Rating>, Rating, { rejectValue: string }
+export const getYourRatings = createAsyncThunk<Array<Rating>, Rating, { rejectValue: string }
 >("rating", async function ({ userId }) {
   if (userId) {
-    const response1 = await loginAPI.getYourRatings(userId);
-    return response1.data as Array<Rating>;
+    const response = await loginAPI.getYourRatings(userId);
+    return response.data;
   }
   return {} as Array<Rating>;
 });
 
-export const getDevicesWithRatings = createAsyncThunk< Array<Device>, Array<Rating>, { rejectValue: string }>
-("getDevicesWithRatings", async function (ratings: Array<Rating>) {
-  const deviceIds: number[] = ratings.map(rating => {
-    if(rating.deviceId) return rating.deviceId
-    else return 0
+export const getDevicesWithRatings = createAsyncThunk<Array<Device>, Array<Rating>, { rejectValue: string }>
+  ("getDevicesWithRatings", async function (ratings: Array<Rating>) {
+    const deviceIds: number[] = ratings.map(rating => {
+      if (rating.deviceId) return rating.deviceId
+      else return 0
+    })
+    const response = await deviceApi.getDevicesByIds(deviceIds)
+    return response.data
   })
-  const response2 = await deviceApi.getDevicesByIds(deviceIds)
-  return response2.data as Array<Device>
-})
 
 export const setNewEmail = createAsyncThunk<
-  { email: string; id: number },
+  { email: string; },
   { email: string; id: number },
   { rejectValue: string }
 >("setNewEmail", async function ({ email, id }, { rejectWithValue }) {
-  const response: AxiosResponse = await loginAPI.setNewEmail(email, id);
+  const response = await loginAPI.setNewEmail(email, id);
   if (response.status !== 200) {
     return rejectWithValue("response error");
   } else {

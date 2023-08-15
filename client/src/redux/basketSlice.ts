@@ -13,6 +13,7 @@ type basketState = {
 
 const initialState: basketState = {
   basket: {
+    id: 0,
     userId: 0
   },
   deviceToggle: false,
@@ -38,7 +39,7 @@ const basketSlice = createSlice({
           const basketDevice = state.basketDevices.find(basketDevice => {
             if(basketDevice.deviceId === device.id) return basketDevice
           })
-          if(basketDevice) totalPrice = totalPrice + device.price * basketDevice.countOfProducts
+          if(basketDevice) totalPrice = totalPrice + device.price * state.basketDevices.length
         }   
       })
       state.totalPrice = totalPrice
@@ -58,15 +59,15 @@ const basketSlice = createSlice({
     .addCase(getDevicesFromBasket.fulfilled, (state, action) =>{ 
       state.devices = action.payload
     })
-    // .addCase(setBasketDevices.fulfilled, (state, action) => {
-    //   state.basketDevices = action.payload
-    // })
     .addCase(changeCountOfProducts.fulfilled, (state, action) => {
       state.basketDevices = state.basketDevices.map(basketDevice => {
         if(basketDevice.deviceId === action.payload.deviceId) return action.payload
         return basketDevice
       })
     })
+    // .addCase(setBasketDevices.fulfilled, (state, action) => {
+    //   state.basketDevices = action.payload
+    // })
   }
 });
 
@@ -82,10 +83,6 @@ export const setTotalPrice = () => {
 //   }
 // )
 
-export const setBasketDevices = (arr: Array<BasketDevice>) => {
-  return basketSlice.actions.setBasketDevices(arr)
-}
-
 export const changeCountOfProducts = createAsyncThunk<BasketDevice, {deviceId: number, countOfProducts: number}, { rejectValue: string}>(
   'changeCountOfProducts',
   async function ({deviceId, countOfProducts}) {
@@ -94,21 +91,25 @@ export const changeCountOfProducts = createAsyncThunk<BasketDevice, {deviceId: n
   }
 )
 
+export const setBasketDevices = (arr: Array<BasketDevice>) => {
+  return basketSlice.actions.setBasketDevices(arr)
+}
+
 export const setBasketThunk = createAsyncThunk<Basket, Basket, { rejectValue: string }>(
   'setBasket',
   async function ({userId}) {
     const response = await basketApi.getBasket({userId})
-    return response.data as Basket
+    return response.data
   }
 )
 
-export const addDeviceToBasket = createAsyncThunk<Device, {deviceId: number, basketId: number}, { rejectValue: string }>(
+export const addDeviceToBasket = createAsyncThunk<BasketDevice, {deviceId: number, basketId: number}, { rejectValue: string }>(
   'addDeviceToBasket',
   async function ({deviceId, basketId}) {
     const response = await basketApi.addDeviceToBasket({ deviceId, basketId })
-    const devicesIds = response.data as {deviceId: number, basketId: number}
-    getOneDevice({deviceId: devicesIds.deviceId})
-    return {}
+    const basketDevice = response.data
+    getOneDevice({deviceId: basketDevice.deviceId})
+    return basketDevice
   }
 )
 
@@ -116,17 +117,14 @@ export const getDevicesFromBasket = createAsyncThunk<Array<Device>, {basketId: n
   'getDevicesFromBasket',
   async function ({basketId, dispatch}) {
     const response = await basketApi.getDevicesFromBasket({basketId})
-    const devicesIds = response.data as {
-      count: number,
-      rows: Array<{deviceId: number, basketId: number, id?: number, countOfProducts: number}>
-    }
-    dispatch(setBasketDevices(devicesIds.rows))
-    const arrIds = devicesIds.rows.map(item => {
+    const devices = response.data 
+    if(devices) dispatch(setBasketDevices(devices))
+    const arrIds = devices.map(item => {
       return item.deviceId
     })
 
     const response2 = await deviceApi.getDevicesByIds(arrIds)
-    return response2.data as Array<Device> & {countOfProducts: number}
+    return response2.data
   }
 )
 

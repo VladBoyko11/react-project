@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { Brand, Device, Type } from '../redux/types'
+import { Basket, BasketDevice, Brand, Device, Rating, Type, User } from '../redux/types'
 
 const instance = axios.create({
     baseURL: 'http://localhost:5000/'
@@ -22,111 +22,133 @@ export type deviceApiParams = {
     typeName?: string
 }
 
-export const deviceApi = {
+type deviceApiType = {
+    getDevices(params: deviceApiParams): Promise<AxiosResponse<Device[] | Device>>,
+    getBrands(params?: deviceApiParams): Promise<AxiosResponse<Brand[] | Brand>>,
+    getTypes(params?: deviceApiParams): Promise<AxiosResponse<Type[] | Type>>,
+    addYourDeviceRating(rating: number, userId: number, deviceId: number): Promise<AxiosResponse<Device>>,
+    getDevicesByIds(deviceIds: Array<number>): Promise<AxiosResponse<Device[]>>
+}
+
+export const deviceApi: deviceApiType = {
     async getDevices(params: deviceApiParams) {
         if(!params) {
-            return instance.get(`api/device`).then(response => response.data).then(res => res)
+            return instance.get(`api/device`)
         }
         if(params.deviceId && !params.limit) {
-            return instance.get(`api/device/${params.deviceId}`).then(response => response)
+            return instance.get(`api/device/${params.deviceId}`)
         }
         if(params.deviceId && params.limit && params.page) {
-            return instance.get(`api/device/${params.deviceId}?limit=${params.limit}&page=${params.page}`).then(response => response)
+            return instance.get(`api/device/${params.deviceId}?limit=${params.limit}&page=${params.page}`)
         }
-        return instance.get(`api/device?limit=${params.limit}&page=${params.page}&brandId=${params.brandId}&typeId=${params.typeId}`).then(response => response)
+        return instance.get(`api/device?limit=${params.limit}&page=${params.page}&brandId=${params.brandId}&typeId=${params.typeId}`)
     },
     async getBrands(params?: deviceApiParams) {
         if(!params) {
-            return instance.get('/api/brand').then(response => response)
+            return instance.get('/api/brand')
         }
         if(params.brandId) {
-            return instance.get(`api/brand/${params.brandId}`).then(response => response)
+            return instance.get(`api/brand/${params.brandId}`)
         }
-        return instance.get(`/api/brand${params}`).then(response => response)
+        return instance.get(`/api/brand${params}`)
     },
     async getTypes(params?: deviceApiParams) {
-        if(!params) return instance.get('/api/type').then(response => response)
-        if(!params.typeName) return instance.get('/api/type').then(response => response)
-        else return instance.get(`/api/type/${params.typeName}`).then(response => response)
+        if(!params) return instance.get('/api/type')
+        if(!params.typeName) return instance.get('/api/type')
+        else return instance.get(`/api/type/${params.typeName}`)
     },
     async addYourDeviceRating(rating: number, userId: number, deviceId: number) {
-        return instance.post('api/rating', {userId, deviceId, rate: rating}).then(res => res)
-    },
-    async getDeviceDescription(deviceId: string) {
-        return instance.get(`api/device/description/${deviceId}`).then(res => res)
+        return instance.post('api/rating', {userId, deviceId, rate: rating})
     },
     async getDevicesByIds(deviceIds: Array<number>) {
-        return instance.get(`api/device/deviceIds?deviceIds=${deviceIds}`).then(res => res)
+        return instance.get(`api/device/deviceIds?deviceIds=${deviceIds}`)
     }
 }
 
-export const loginAPI = {
+type loginApiType = { 
+    login (email: string, password: string): Promise<AxiosResponse<User & {token: string}>>,
+    auth (): Promise<AxiosResponse<{
+        token: string,
+        role: string,
+        id: number,
+        email: string
+    }>>,
+    registration (email: string, password: string): Promise<AxiosResponse<User & {token: string}>>,
+    getYourRatings (userId: number): Promise<AxiosResponse<Rating[]>>,
+    setNewEmail(email: string, id: number): Promise<AxiosResponse<{email: string}>>
+}
+
+export const loginAPI: loginApiType = {
     async login(email: string, password: string) {
-        return instance.post('api/user/login', {email, password}).then(res => res)
+        return instance.post('api/user/login', {email, password})
     },
     async auth(){
-        return instance.get('api/user/auth').then(res => res).catch(err => err)
+        return instance.get('api/user/auth').then(res => res)
     },
     async registration(email: string, password: string) {
-        return instance.post('api/user/registration', {email, password}).then(res => res)
+        return instance.post('api/user/registration', {email, password})
     },
     async getYourRatings (userId: number) {
-        return instance.get(`api/rating/user/${userId}`).then(res => res)
+        return instance.get(`api/rating/user/${userId}`)
     },
     async setNewEmail (email: string, id: number) {
-        return instance.post('api/user/newEmail', {email, id}).then(res => res) 
+        return instance.post('api/user/newEmail', {email, id})
     }
 }
 
 type adminApiType = {
-    file: Blob | string, 
-    addType ({name}: Type): Promise<Type>,
-    addBrand ({name}: Brand): Promise<Response>,
-    addDevice ({name, price, brandId, typeId}: Device): Promise<Device>,
-    addPhoto (File: Blob | string): Promise<Blob | string>
+    file: File | null, 
+    addType ({name}: Type): Promise<AxiosResponse<Type>>,
+    addBrand ({name}: Brand): Promise<AxiosResponse<Brand>>,
+    addDevice ({name, price, brandId, typeId}: Device): Promise<AxiosResponse<Device>>,
+    addPhoto (File: File): Promise<File>
 }
 
 export const adminApi: adminApiType = {
-    file:  '',
-    async addType({name}: Type) {
-        return instance.post('/api/type', {name}) as Type
+    file:  null,
+    async addType({name}: Omit<Type, "id">) {
+        return instance.post<Type>('/api/type', {name})
     },
-    async addBrand({name}: Brand) {
-        return instance.post('/api/brand', {name})
+    async addBrand({name}: Omit<Brand, "id">) {
+        return instance.post<Brand>('/api/brand', {name})
     },
-    async addDevice({name, price, brandId, typeId}: Device) {
+    async addDevice({name, price, brandId, typeId, title, description}: Omit<Device, "id, rating, img">) {
         const formData = new FormData()
         if(name) formData.append('name', name)
         formData.append('price', String(price))
         formData.append('brandId', String(brandId))
         formData.append('typeId', String(typeId))
-        if(this.file !== '') formData.append('img', this.file)
-        return instance.post('/api/device', formData, {
+        formData.append('title', String(title))
+        formData.append('description', String(description))
+        if(this.file) formData.append('img', this.file)
+        return await instance.post<Device>('/api/device', formData, {
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
                 'Content-Type': 'multipart/form-data'
             }
-        }) as Device
+        })
     },
-    async addPhoto(File: Blob | string) {
+    addPhoto(File: File) {
         this.file = File
-        return this.file
+        return new Promise((res, rej) => {
+            if(this.file) res(this.file)
+            else rej('File is not found')
+        })
     }
 }
 
 interface basketApiData {
     file?: Blob | string,
-    getBasket(params: {basketId?: number, deviceId?: number, userId?: number}): Promise<AxiosResponse>
-    addDeviceToBasket(params: {basketId?: number, deviceId?: number}): Promise<AxiosResponse>
-    getDevicesFromBasket(params: {basketId?: number, deviceId?: number}):  Promise<AxiosResponse>
-    deleteDeviceFromBasket(params: {basketId?: number, deviceId?: number}): Promise<AxiosResponse>,
-    changeCountOfProducts({deviceId, countOfProducts}: {deviceId: number, countOfProducts: number}): Promise<AxiosResponse>
+    getBasket(params: {basketId?: number, deviceId?: number, userId?: number}): Promise<AxiosResponse<Basket>>
+    addDeviceToBasket(params: {basketId?: number, deviceId?: number}): Promise<AxiosResponse<BasketDevice>>
+    getDevicesFromBasket(params: {basketId?: number, deviceId?: number}):  Promise<AxiosResponse<BasketDevice[]>>
+    deleteDeviceFromBasket(params: {basketId?: number, deviceId?: number}): Promise<AxiosResponse<Device>>,
+    changeCountOfProducts({deviceId, countOfProducts}: {deviceId: number, countOfProducts: number}): Promise<AxiosResponse<BasketDevice>>
 }
 
 export const basketApi: basketApiData = {
     async getBasket(params) {
-        const res = await instance.get(`/api/basket/${params.userId}`)
-        return res
+        return await instance.get(`/api/basket/${params.userId}`)
     },
     async addDeviceToBasket(params){
         return instance.post(`api/basket/${params.basketId}?deviceId=${params.deviceId}`).then(res => res)
@@ -138,6 +160,6 @@ export const basketApi: basketApiData = {
         return instance.delete(`api/basket/${params.basketId}?deviceId=${params.deviceId}`).then(res => res)
     },
     async changeCountOfProducts({deviceId, countOfProducts}) {
-        return instance.post(`api/basket/devices/${deviceId}`, {countOfProducts}).then(res => res)
+        return instance.post(`api/basket/devices/${deviceId}`, {countOfProducts})
     }
 }

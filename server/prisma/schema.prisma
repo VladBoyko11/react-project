@@ -82,5 +82,7 @@ model BasketDevice {
   basket Basket @relation(fields: [basketId], references: [id])
   basketId Int @unique
 
+  countOfProducts Int @default(1)
+
   @@id([deviceId, basketId])
 }

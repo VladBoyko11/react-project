@@ -13,8 +13,8 @@ const DevicePage: React.FC<DevicePagePropsType> = (props) => {
 
   const submitForm: FormSubmitHandler = (formData: { rating?: number }) => {
     if (props.userId) {
-      if(formData.rating && props.device.id) {
-        props.addYourDeviceRatingThunk({rating: formData.rating, userId: props.userId, deviceId: props.device.id});
+      if (formData.rating && props.device.id) {
+        props.addYourDeviceRatingThunk({ rating: formData.rating, userId: props.userId, deviceId: props.device.id });
         setRateDeviceBoolean(false);
       }
     }
@@ -59,18 +59,12 @@ const DevicePage: React.FC<DevicePagePropsType> = (props) => {
       </div>
       <div>
         <span>DESCRIPTION</span>
-        {props.deviceDescriptions.length !== 0
-          ? props.deviceDescriptions.map(
-              (deviceDescription: DeviceInfo, key: number) => {
-                return (
-                  <div key={key}>
-                    <span>{deviceDescription.title}: </span>
-                    <span>{deviceDescription.description}</span>
-                  </div>
-                );
-              }
-            )
-          : null}
+        return (
+        <div>
+          <span>{props.device.title}: </span>
+          <span>{props.device.description}</span>
+        </div>
+        );
       </div>
     </div>
   );
@@ -117,11 +111,10 @@ type OwnPropsType = {
 const mapStateToProps = (state: RootState) => ({
   device: state.devicesPage.device,
   brand: state.devicesPage.brand,
-  deviceDescriptions: state.devicesPage.deviceDescriptions,
   userId: state.auth.id
 })
 
-const connector = connect(mapStateToProps, {getBrandThunk, addYourDeviceRatingThunk, setNotification, getDeviceThunk})
+const connector = connect(mapStateToProps, { getBrandThunk, addYourDeviceRatingThunk, setNotification, getDeviceThunk })
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 type DevicePagePropsType = PropsFromRedux & OwnPropsType

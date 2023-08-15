@@ -11,6 +11,12 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["@material-ui/*/*/*"]
+          }
+        ]
       },
     ],
   },
