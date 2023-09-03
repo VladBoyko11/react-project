@@ -1,6 +1,6 @@
 import React from "react";
 import {Field, FormSubmitHandler, InjectedFormProps, reduxForm} from "redux-form";
-import {Input} from "../common/FormControl";
+import {renderField} from "../common/FormControl";
 import {connect, ConnectedProps} from "react-redux";
 import {addType} from "../../redux/adminPageSlice";
 import { RootState } from "../../redux/store";
@@ -23,7 +23,7 @@ const AddNewTypeForm: React.FC<InjectedFormProps<Type>> = ({handleSubmit}) => {
         <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="type">New type</label>
-                <Field id="type" placeholder='type' name='type' component={Input}/>
+                <Field id="type" placeholder='type' name='type' component={renderField}/>
             </div>
             <button className={'btn-warning'} type='submit'>Create</button>
         </form>

@@ -3,10 +3,12 @@ import {Field, FormSubmitHandler, InjectedFormProps, reduxForm} from "redux-form
 import {login} from "../../redux/authSlice";
 import {connect, ConnectedProps} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Input} from "../common/FormControl";
+// import {Input} from "../common/FormControl";
 import {setBasketThunk} from "../../redux/basketSlice";
 import { RootState } from "../../redux/store";
-import { Button, FormGroup, FormLabel } from "@mui/material";
+import { renderField } from "../common/FormControl";
+import { email, required } from "../common/Validators/Validators";
+import { FormComponent } from "./FormComponent";
 
 const Login: React.FC<LoginPropsType> = (props) => {
 
@@ -34,27 +36,14 @@ const Login: React.FC<LoginPropsType> = (props) => {
     return (
         <div>
             <h1>Login</h1>
-            <div>If you don`t have account please <Button className={'btn-warning h-50'} onClick={registrationAccount}>registration it</Button></div>
+            <div>If you don`t have account please <button className={'btn-warning h-50'} onClick={registrationAccount}>registration it</button></div>
             <LoginReduxForm {...props} onSubmit={submitForm}/>
         </div>
     )
 }
 
 const LoginForm:  React.FC<InjectedFormProps> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <FormGroup>
-                <FormLabel htmlFor="email">Email address</FormLabel>
-                <Field id="email" placeholder='email' name='email' component={Input}/>
-            </FormGroup>
-            <FormGroup>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <Field id="password" placeholder='password' name='password' component={Input}/>
-            </FormGroup>
-                {/* <div> <Button type='submit' variant="success">Login</Button> </div> */}
-                <div> <Button type='submit'>Login</Button> </div>
-        </form>
-    )
+    return <FormComponent {...props}/>
 }
 
 const LoginReduxForm = reduxForm({

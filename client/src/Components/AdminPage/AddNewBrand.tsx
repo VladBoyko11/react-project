@@ -1,6 +1,6 @@
 import React from "react";
 import {Field, FormSubmitHandler, InjectedFormProps, reduxForm} from "redux-form";
-import {Input} from "../common/FormControl";
+import {renderField} from "../common/FormControl";
 import {connect, ConnectedProps} from "react-redux";
 import {addBrand} from '../../redux/adminPageSlice';
 import redirectToSomePage from '../common/RedirectToSomePage'
@@ -22,7 +22,7 @@ const AddNewBrandForm: React.FC<InjectedFormProps<Brand>> = ({handleSubmit}) => 
         <form className="" onSubmit={handleSubmit}>
             <form>
                 <label htmlFor="brand">New brand</label>
-                <Field id="brand" placeholder='brand' name='brand' component={Input}/>
+                <Field id="brand" placeholder='brand' name='brand' component={renderField}/>
             </form>
             <button className={'btn-warning'} type='submit'>Create</button>
         </form>

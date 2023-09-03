@@ -1,5 +1,5 @@
-import { FormControl } from "@mui/material"
-import React from "react"
+import React, { HTMLInputTypeAttribute } from "react"
+import { WrappedFieldProps } from "redux-form"
 
 // export const Textarea = ({input, meta, ...props}) => {
 //     return (
@@ -21,11 +21,18 @@ import React from "react"
 //     )
 // }
 
-export const Input = ({input, meta, ...props}: any) => {
-    return (
-        <div className={'mb-3'}>
-            <FormControl {...input} {...props} />
-            {/*{meta.error && meta.touched && <div><span className={style.error}>{meta.error}</span></div>}*/}
+interface IRenderField {
+    id?: string,
+    label: string, 
+    type: HTMLInputTypeAttribute
+}
+
+export const renderField = ({ input, id, label, type, meta: { touched, error, warning } }: IRenderField & WrappedFieldProps) => {
+    return <div>
+        <label htmlFor={id}>{label}</label>
+        <div>
+            <input id={id} {...input} placeholder={label} type={type} />
+            {touched && ((error && <div>{error}</div>) || (warning && <div>{warning}</div>))}
         </div>
-    )
+    </div>
 }

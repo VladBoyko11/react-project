@@ -8,12 +8,4 @@ export const maxLength = (length: number) => (value: any) => {
     return `max length is ${length}`
 }
 
-export const checkEmail = (value: any) => {
-    let str = []
-    if(value) {
-        str = value.split('@')
-    }
-    if(str.length === 0) return undefined
-    if(str.length > 1) return undefined
-    return `incorrect email`
-}
+export const email = (value: string) => value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ? 'Invalid email address' : undefined

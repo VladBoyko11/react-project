@@ -5,8 +5,6 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { setNotification } from "../../../redux/notificationSlice";
 import { addYourDeviceRatingThunk, getBrandThunk, getDeviceThunk } from "../../../redux/deviceSlice";
-import { DeviceInfo } from "../../../redux/types";
-import { Button, FormGroup, FormLabel } from "@mui/material";
 
 const DevicePage: React.FC<DevicePagePropsType> = (props) => {
   const [rateDeviceBoolean, setRateDeviceBoolean] = useState(false);
@@ -36,7 +34,7 @@ const DevicePage: React.FC<DevicePagePropsType> = (props) => {
         {rateDeviceBoolean ? (
           <AddRateDeviceReduxForm onSubmit={submitForm} />
         ) : (
-          <Button
+          <button
             className={"mt-1"}
             onClick={() => {
               if (props.userId) {
@@ -54,7 +52,7 @@ const DevicePage: React.FC<DevicePagePropsType> = (props) => {
             }}
           >
             Add your rating to the device
-          </Button>
+          </button>
         )}
       </div>
       <div>
@@ -73,8 +71,8 @@ const DevicePage: React.FC<DevicePagePropsType> = (props) => {
 const AddRateDeviceForm: React.FC<InjectedFormProps> = ({ handleSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <FormGroup>
-        <FormLabel>Add your rating</FormLabel>
+      <>
+        <label>Add your rating</label>
         <Field
           className={"form-select"}
           name="rating"
@@ -92,10 +90,10 @@ const AddRateDeviceForm: React.FC<InjectedFormProps> = ({ handleSubmit }) => {
           <option value="9">9</option>
           <option value="10">10</option>
         </Field>
-      </FormGroup>
-      <Button className={"btn-warning mt-2"} type="submit">
+      </>
+      <button className={"btn-warning mt-2"} type="submit">
         Add your rating
-      </Button>
+      </button>
     </form>
   );
 };
