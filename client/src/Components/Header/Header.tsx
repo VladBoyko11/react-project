@@ -11,7 +11,6 @@ import {setBasketThunk} from "../../redux/basketSlice";
 import { RootState } from "../../redux/store";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Type } from "../../redux/types";
-import { Button } from "@mui/material";
 
 const Header: React.FC<HeaderPropsType> = (props) => {
 
@@ -34,8 +33,8 @@ const Header: React.FC<HeaderPropsType> = (props) => {
     return (
         <header>
             <div className={`dropdown`}>
-                <Button className={`btn btn-warning`} id='dropdownMenuButton' data-bs-toggle="dropdown"
-                        aria-expanded="false"><FontAwesomeIcon icon={faBars as IconProp } fontSize='30px' /></Button>
+                <button className={`btn btn-warning`} id='dropdownMenuButton' data-bs-toggle="dropdown"
+                        aria-expanded="false"><FontAwesomeIcon icon={faBars as IconProp } fontSize='30px' /></button>
                 <div className="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                     <div className='dropdown-item' style={{cursor: 'pointer'}} onClick={() => {
                         redirectToSomePage('/devices')}}
@@ -58,9 +57,9 @@ const Header: React.FC<HeaderPropsType> = (props) => {
                         redirectToSomePage('/basket') }}>
                         <FontAwesomeIcon className={style.loggedInUser} icon={faBasketShopping as IconProp} fontSize='1.8rem'/>
                     </div>
-                    {props.role === 'ADMIN' ? <Button className={style.btnAdminPage} onClick={() => {redirectToSomePage('/admin-page')}}>Admin Page</Button> : null}
+                    {props.role === 'ADMIN' ? <button className={style.btnAdminPage} onClick={() => {redirectToSomePage('/admin-page')}}>Admin Page</button> : null}
                 </div>
-                : <Button className={'btn-warning'} onClick={() => {redirectToSomePage('/auth')}}>Authorization</Button>}
+                : <button className={" bg-red-800 text-amber-700"} onClick={() => {redirectToSomePage('/auth')}}>Authorization</button>}
         </header>
     )
 }

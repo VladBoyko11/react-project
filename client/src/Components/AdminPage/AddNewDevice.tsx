@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, FormSubmitHandler, InjectedFormProps, reduxForm } from "redux-form";
-import { Input } from "../common/FormControl";
+import { renderField } from "../common/FormControl";
 import { connect, ConnectedProps } from "react-redux";
 import { addDevice, addPhoto } from "../../redux/adminPageSlice";
 import redirectToSomePage from "../common/RedirectToSomePage"
@@ -36,19 +36,19 @@ const AddNewDeviceForm: React.FC<InjectedFormProps<Device>> = ({handleSubmit}) =
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="name">Device name</label>
-        <Field id="name" placeholder="name" name="deviceName" component={Input} />
+        <Field id="name" placeholder="name" name="deviceName" component={renderField} />
       </div>
       <div>
         <label htmlFor="price">Device price</label>
-        <Field id="price" placeholder="price" name="devicePrice" component={Input} />
+        <Field id="price" placeholder="price" name="devicePrice" component={renderField} />
       </div>
       <div>
         <label htmlFor="brand">Brand</label>
-        <Field id="brand" placeholder="brand" name="deviceBrand" component={Input} />
+        <Field id="brand" placeholder="brand" name="deviceBrand" component={renderField} />
       </div>
       <div >
         <label htmlFor="type">Type</label>
-        <Field id="type" placeholder="type" name="deviceType" component={Input} />
+        <Field id="type" placeholder="type" name="deviceType" component={renderField} />
       </div>
       <div >
         <label className={"me-3 form-label"} htmlFor={"customFile"}>
