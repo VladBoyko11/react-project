@@ -41,3 +41,9 @@ header {
   color: black !important;
   font-family: "Golos SemiBold" !important; 
 }
+.dropdownBtn{
+  @apply bg-yellow-400 rounded p-2 h-16
+}
+.authorizationBtn{
+  @apply bg-yellow-400 rounded h-16 p-2
+}

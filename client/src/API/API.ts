@@ -1,11 +1,11 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { Basket, BasketDevice, Brand, Device, Rating, Type, User } from '../redux/types'
 
 const instance = axios.create({
     baseURL: 'http://localhost:5000/'
 })
 
-const authInterceptor = (config: any) => {
+const authInterceptor = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     config.headers.authorization = `Bearer ${sessionStorage.getItem('token')}`
     return config
 }

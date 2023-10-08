@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
-import style from './Header.module.scss'
+import * as style from './Header.module.scss'
 import {NavLink, useNavigate} from "react-router-dom";
 import {connect, ConnectedProps} from "react-redux";
 import {auth} from "../../redux/authSlice";
 
 import { faBars, faCircleRight, faHouse, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {getTypesThunk} from "../../redux/deviceSlice";
 import {setBasketThunk} from "../../redux/basketSlice";
 import { RootState } from "../../redux/store";
@@ -23,7 +23,7 @@ const Header: React.FC<HeaderPropsType> = (props) => {
     }
     useEffect(()=>{
         if(props.isAuth && props.id){
-            props.setBasketThunk({userId: props.id})
+            props.setBasketThunk({userId: props.id});
         }
     }, [props.isAuth])
     useEffect(() =>{
@@ -33,7 +33,7 @@ const Header: React.FC<HeaderPropsType> = (props) => {
     return (
         <header>
             <div className={`dropdown`}>
-                <button className={`btn btn-warning`} id='dropdownMenuButton' data-bs-toggle="dropdown"
+                <button className={style.dropdownBtn} id='dropdownMenuButton' data-bs-toggle="dropdown"
                         aria-expanded="false"><FontAwesomeIcon icon={faBars as IconProp } fontSize='30px' /></button>
                 <div className="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                     <div className='dropdown-item' style={{cursor: 'pointer'}} onClick={() => {
@@ -59,7 +59,7 @@ const Header: React.FC<HeaderPropsType> = (props) => {
                     </div>
                     {props.role === 'ADMIN' ? <button className={style.btnAdminPage} onClick={() => {redirectToSomePage('/admin-page')}}>Admin Page</button> : null}
                 </div>
-                : <button className={" bg-red-800 text-amber-700"} onClick={() => {redirectToSomePage('/auth')}}>Authorization</button>}
+                : <button className={style.authorizationBtn} onClick={() => {redirectToSomePage('/auth')}}>Authorization</button>}
         </header>
     )
 }

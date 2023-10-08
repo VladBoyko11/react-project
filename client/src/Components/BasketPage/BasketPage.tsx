@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { useAppDispatch } from "src/hook";
 import { BasketDevice as TypeBasketDevice, Device } from "src/redux/types";
 import BasketDevice from "./BasketDevice";
-import style from './Basket.module.scss'
+import * as style from './Basket.module.scss'
 
 type BasketPagePropsType = {
     devices: Array<Device>,
@@ -11,7 +10,6 @@ type BasketPagePropsType = {
     basketDevices: Array<TypeBasketDevice>,
 }
 const BasketPage: React.FC<BasketPagePropsType> = (props) => {
-    const dispatch = useAppDispatch()
     useEffect(() => {
         props.setTotalPrice()
     }, [props.devices])
