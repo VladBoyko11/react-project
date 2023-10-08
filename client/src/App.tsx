@@ -6,7 +6,9 @@ import Header from "./Components/Header/Header";
 import Main from "./Components/Main/Main";
 import React from 'react';
 
-const App: React.FC = () => {
+const App: React.FC<{
+  tab: string
+}> = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
