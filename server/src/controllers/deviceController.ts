@@ -9,16 +9,19 @@ import ApiError from "../error/ApiError";
 class DeviceController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, price, brandId, typeId, title, description } = req.body;
+      const { name, price, brandId, typeId, title = '', description = '', rating = 0 } = req.body;
       const fileName = uuidv4() + ".jpg";
+      // return res.json(`${name}, ${price}, ${brandId}, ${typeId}, ${title}, ${description}, ${fileName}`)
+      // return res.json(req.files)
       const device = await prisma.device.create({data: {
         name,
-        price,
-        brandId,
-        typeId,
+        price: Number(price),
+        brandId: Number(brandId),
+        typeId: Number(typeId),
         img: fileName,
         title,
-        description
+        description,
+        rating: Number(rating)
       }});
       if(req.files) {
         const img = req.files.img as UploadedFile
@@ -26,7 +29,8 @@ class DeviceController {
       }
       return res.json(device);
     } catch (e) {
-      next(ApiError.badRequest('Create device error'));
+      console.log(e)
+      // next(ApiError.badRequest('Create device error'));
     }
     
   }

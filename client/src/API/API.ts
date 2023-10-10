@@ -70,7 +70,6 @@ type loginApiType = {
     auth (): Promise<AxiosResponse<{
         token: string,
         role: string,
-        id: number,
         email: string
     }>>,
     registration (email: string, password: string): Promise<AxiosResponse<User & {token: string}>>,
@@ -100,7 +99,7 @@ type adminApiType = {
     file: File | null, 
     addType ({name}: Type): Promise<AxiosResponse<Type>>,
     addBrand ({name}: Brand): Promise<AxiosResponse<Brand>>,
-    addDevice ({name, price, brandId, typeId}: Device): Promise<AxiosResponse<Device>>,
+    addDevice ({name, price, brandId, typeId, title, description}: Device): Promise<AxiosResponse<Device>>,
     addPhoto (File: File): Promise<File>
 }
 

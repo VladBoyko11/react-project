@@ -175,8 +175,7 @@
   }
 }
 .shoppingBtn{
-  position: relative;
-  float: right;
+  
 }
 .shoppingBtnIcon{
   font-size: 2.2rem;
@@ -187,9 +186,10 @@
 }
 .deviceInBasketIcon{
   position: absolute;
+  z-index: 9999;
   font-size: 1.2rem;
   top: 0;
-  right: 0;
+  right: 1;
   color: #6700cc;
 }
 .shoppingBtn:hover .deviceInBasketIcon {
@@ -220,4 +220,7 @@
   width: 200px;
   border-top: 1px solid black;
   border-right: 1px solid black;
+}
+.devicesContainer{
+  @apply flex flex-wrap w-10/12 justify-center
 }

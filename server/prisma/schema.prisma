@@ -40,16 +40,16 @@ model Device {
   name String @unique
   price Int
   img String 
-  title String @db.Char(255)
+  title String
   description String
 
   rating Int @default(0)
   ratings Rating[]
   basket BasketDevice?
   type Type @relation(fields: [typeId], references: [id])
-  typeId Int @unique
+  typeId Int
   brand Brand @relation(fields: [brandId], references: [id])
-  brandId Int @unique
+  brandId Int
 }
 
 model Type {
@@ -68,9 +68,9 @@ model Brand {
 
 model TypeBrand {
   type Type @relation(fields: [typeId], references: [id])
-  typeId Int @unique
+  typeId Int
   brand Brand @relation(fields: [brandId], references: [id])
-  brandId Int @unique
+  brandId Int
 
   @@id([typeId, brandId])
 }

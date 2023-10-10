@@ -14,14 +14,25 @@ import BasketContainer from "../BasketPage/BasketContainer";
 import { RootState } from "../../redux/store";
 import { Device, Type } from "../../redux/types";
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 const Main: React.FC<MainProps> = (props) => {
 
     useEffect(() => {
         props.getTypesThunk({typeName: undefined})
     }, [])
 
+    
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#ffc107',
+            },
+        },
+    });
     return (
         <main>
+            <ThemeProvider theme={theme}>
             <Routes>
                 <Route path="/devices/" element={
                     <DevicesContainer />}
@@ -48,6 +59,7 @@ const Main: React.FC<MainProps> = (props) => {
                 />
             </Routes>
             {props.toggleNotification ? <NotificationContainer /> : null}
+            </ThemeProvider>
         </main>
     )
 }

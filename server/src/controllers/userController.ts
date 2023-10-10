@@ -26,7 +26,7 @@ class UserController {
         }
         const hashPassword = await bcrypt.hash(password, 5)
         const user = await prisma.user.create({data: {email, role, password: hashPassword}})
-        // const basket = await Basket.create({userId: user.id})
+        const basket = await prisma.basket.create({data: {userId: user.id}})
         const token = user.id ? generateJwt(user.id, user.email, user.role) : null
         return res.json({token, email: user.email, role: user.role, password: user.password, id: user.id})
     }
@@ -47,6 +47,7 @@ class UserController {
 
     async check(req: Request, res: Response, next: NextFunction) {
         const token = generateJwt(req.body.user.id, req.body.user.email, req.body.user.role)
+        console.log({token, email: req.body.user.email, role: req.body.user.role})
         return res.json({token, email: req.body.user.email, role: req.body.user.role, id: req.body.user.id})
     }
     async setNewEmail(req: Request, res: Response, next: NextFunction) {
