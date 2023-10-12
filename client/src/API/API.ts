@@ -22,12 +22,18 @@ export type deviceApiParams = {
     typeName?: string
 }
 
+export type totalCountParams = {
+    brandId?: number,
+    typeId?: number
+}
+
 type deviceApiType = {
     getDevices(params: deviceApiParams): Promise<AxiosResponse<Device[] | Device>>,
     getBrands(params?: deviceApiParams): Promise<AxiosResponse<Brand[] | Brand>>,
     getTypes(params?: deviceApiParams): Promise<AxiosResponse<Type[] | Type>>,
     addYourDeviceRating(rating: number, userId: number, deviceId: number): Promise<AxiosResponse<Device>>,
-    getDevicesByIds(deviceIds: Array<number>): Promise<AxiosResponse<Device[]>>
+    getDevicesByIds(deviceIds: Array<number>): Promise<AxiosResponse<Device[]>>,
+    getTotalCount(params: totalCountParams): Promise<AxiosResponse<number>>
 }
 
 export const deviceApi: deviceApiType = {
@@ -62,6 +68,12 @@ export const deviceApi: deviceApiType = {
     },
     async getDevicesByIds(deviceIds: Array<number>) {
         return instance.get(`api/device/deviceIds?deviceIds=${deviceIds}`)
+    },
+    async getTotalCount(params) {
+        if(!params) return instance.get(`api/device/totalCount`)
+        // if(params.brandId && !params.typeId) return instance.get(`api/device/totalCount?brandId=${params.brandId}`)
+        // if(!params.brandId && params.typeId) return instance.get(`api/device/totalCount?typeId=${params.typeId}`)
+        return instance.get(`api/device/totalCount?typeId=${params.typeId}&brandId=${params.brandId}`)
     }
 }
 
@@ -140,9 +152,9 @@ interface basketApiData {
     file?: Blob | string,
     getBasket(params: {basketId?: number, deviceId?: number, userId?: number}): Promise<AxiosResponse<Basket>>
     addDeviceToBasket(params: {basketId?: number, deviceId?: number}): Promise<AxiosResponse<BasketDevice>>
-    getDevicesFromBasket(params: {basketId?: number, deviceId?: number}):  Promise<AxiosResponse<BasketDevice[]>>
+    getDevicesFromBasket(params: {basketId?: number, deviceId?: number}):  Promise<AxiosResponse<BasketDevice[] | string>>
     deleteDeviceFromBasket(params: {basketId?: number, deviceId?: number}): Promise<AxiosResponse<Device>>,
-    changeCountOfProducts({deviceId, countOfProducts}: {deviceId: number, countOfProducts: number}): Promise<AxiosResponse<BasketDevice>>
+    changeCountOfProducts({deviceId, countOfProducts, basketId}: {deviceId: number, countOfProducts: number, basketId: number}): Promise<AxiosResponse<BasketDevice>>
 }
 
 export const basketApi: basketApiData = {
@@ -156,9 +168,9 @@ export const basketApi: basketApiData = {
         return instance.get(`api/basket/devices/${params.basketId}`).then(res => res)
     },
     async deleteDeviceFromBasket(params) {
-        return instance.delete(`api/basket/${params.basketId}?deviceId=${params.deviceId}`).then(res => res)
+        return instance.delete(`api/basket/devices/${params.basketId}?deviceId=${params.deviceId}`).then(res => res)
     },
-    async changeCountOfProducts({deviceId, countOfProducts}) {
-        return instance.post(`api/basket/devices/${deviceId}`, {countOfProducts})
+    async changeCountOfProducts({deviceId, countOfProducts, basketId}) {
+        return instance.post(`api/basket/devices/${deviceId}`, {countOfProducts, basketId})
     }
 }

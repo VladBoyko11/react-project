@@ -74,9 +74,9 @@ const Header: React.FC<HeaderPropsType> = (props) => {
                             'aria-labelledby': 'basic-button',
                         }}
                     >
-                        <MenuItem ><NavLink className={style.menuItem} to={'/devices'}><FontAwesomeIcon icon={faCircleRight as IconProp} /> DEVICE PAGE </NavLink></MenuItem>
+                        <NavLink className={style.menuItem} to={'/devices'}><MenuItem ><FontAwesomeIcon icon={faCircleRight as IconProp} /> DEVICE PAGE</MenuItem></NavLink>
                         {props.types.map((type: Type, id: number) => {
-                            return <MenuItem key={id}><NavLink className={style.menuItem} to={`/devices/${type.name}`}><FontAwesomeIcon icon={faCircleRight as IconProp} /> {type.name} </NavLink></MenuItem>
+                            return <NavLink key={id} className={style.menuItem} to={`/devices/${type.name}`}><MenuItem><FontAwesomeIcon icon={faCircleRight as IconProp} /> {type.name}</MenuItem></NavLink>
                         })}
                     </Menu>
                 </div>

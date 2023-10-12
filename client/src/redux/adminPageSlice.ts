@@ -53,7 +53,6 @@ export const addBrand = createAsyncThunk<Omit<Brand, "id">, Brand, {rejectValue:
 export const addDevice = createAsyncThunk<Device, Device, {rejectValue: string}>(
     'api/device',
     async function ({name, price, typeId, brandId, title, description}, { rejectWithValue }) {
-        debugger
         const device = await adminApi.addDevice({name, price, typeId, brandId, title, description})
         if(!device.status){
             return rejectWithValue('Response error!')

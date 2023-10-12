@@ -17,17 +17,21 @@ class RatingController {
     async addDeviceRating(req: Request, res: Response, next: NextFunction) {
         const {userId, deviceId, rate} = req.body
         const id = deviceId
-        const candidate = await prisma.rating.findUnique({where: {
+        const candidate = await prisma.rating.findUnique({where: {userId_deviceId: {
             userId: Number(userId),
             deviceId: Number(deviceId)
-        }})
+        }}})
         if (candidate) {
             await prisma.rating.update({
-                where: {userId, deviceId},
-                data: {rate}
+                where: {userId_deviceId: {userId, deviceId}},
+                data: {rate: Number(rate)}
             })
         } else {
-            await prisma.rating.create({data: {userId, deviceId, rate}})
+            await prisma.rating.create({data: {
+                userId: Number(userId), 
+                deviceId: Number(deviceId), 
+                rate: Number(rate)
+            }})
         }
         const deviceRatings = await prisma.rating.findMany({where: {deviceId}})
         const sumDeviceRatings = deviceRatings.map(value => value.rate).reduce((acc, current) => acc + current)

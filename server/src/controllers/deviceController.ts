@@ -35,20 +35,20 @@ class DeviceController {
     
   }
   async getAll(req: Request, res: Response, next: NextFunction) {
-    let { brandId, typeId, limit, page } = req.query;
-    const myLimit: number = Number(limit) | 6
-    const myPage: number = Number(page) | 1
+    let { brandId, typeId, limit = 6, page = 1 } = req.query;
+    const myLimit: number = Number(limit)
+    const myPage: number = Number(page)
     const myBrandId: number = Number(brandId)
 
     let offset = myPage * myLimit - myLimit;
     let devices;
-    if (brandId == 'undefined' && typeId == 'undefined') {
+    if (brandId === 'undefined' && typeId === 'undefined') {
       devices = await prisma.device.findMany({ skip: offset, take: myLimit });
     }
-    if (brandId != 'undefined' && typeId == 'undefined') {
+    if (brandId !== 'undefined' && typeId === 'undefined') {
       devices = await prisma.device.findMany({ where: { brandId: myBrandId }, skip: offset, take: myLimit })
     }
-    if (brandId == 'undefined' && typeId != 'undefined') {
+    if (brandId === 'undefined' && typeId !== 'undefined') {
       devices = await prisma.device.findMany({ where: { typeId: Number(typeId) }, skip: offset, take: myLimit });
     }
 
@@ -63,15 +63,16 @@ class DeviceController {
         where: { id: Number(id) },
       });
       if (device) {
-        const deviceRatings = await prisma.rating.findMany({ where: { deviceId: device.id } })
         return res.json({
           id: device.id,
           name: device.name,
           price: device.price,
-          rating: deviceRatings,
+          rating: device.rating,
           img: device.img,
           typeId: device.typeId,
           brandId: device.brandId,
+          title: device.title,
+          description: device.description
         });
       }
       else return res.json('Device is not found')
@@ -96,6 +97,19 @@ class DeviceController {
     })
     if (devices.length > 0) return res.json(devices)
     else return res.json('Devices are not found')
+  }
+
+  async getTotalCount(req: Request, res: Response, next: NextFunction) {
+    const {brandId, typeId} = req.query
+    let totalCount = 0
+    if(brandId === 'undefined' && typeId === 'undefined') totalCount = await prisma.device.count()
+    if(brandId !== 'undefined' && typeId === 'undefined') totalCount = await prisma.device.count({where: {brandId: Number(brandId)}})
+    if(brandId === 'undefined' && typeId !== 'undefined') totalCount = await prisma.device.count({where: {typeId: Number(typeId)}})
+    if(brandId !== 'undefined' && typeId !== 'undefined') totalCount = await prisma.device.count({where: {
+      typeId: Number(typeId),
+      brandId: Number(brandId)
+    }})
+    return res.json(totalCount)
   }
 }
 

@@ -4,9 +4,8 @@
 }
 
 header {
-  width: 100vw;
   height: 10.5vh;
-  @apply bg-violet-700;
+  @apply bg-violet-700 w-full;
   padding: 15px;
   display: flex;
   justify-content: space-between;

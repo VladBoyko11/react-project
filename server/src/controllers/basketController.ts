@@ -18,9 +18,9 @@ class BasketController {
     async deleteDeviceFromBasket(req: Request, res: Response, next: NextFunction) {
         const { deviceId } = req.query
         const { basketId } = req.params
-        const device = await prisma.basketDevice.findUnique({ where: { basketId: Number(basketId), deviceId: Number(deviceId) } })
+        const device = await prisma.basketDevice.findUnique({ where: { deviceId_basketId: {basketId: Number(basketId), deviceId: Number(deviceId) } } })
             if (device) {
-                await prisma.basketDevice.delete({ where: { basketId: Number(basketId), deviceId: Number(deviceId) } })
+                await prisma.basketDevice.delete({ where: { deviceId_basketId: { basketId: Number(basketId), deviceId: Number(deviceId) }} })
                 return res.json(device)
             } else return res.json('device is not found in basket')
     }
@@ -28,7 +28,7 @@ class BasketController {
         const { id } = req.params
         const basketId = id
         const { deviceId } = req.query
-        const device = await prisma.basketDevice.findUnique({ where: { basketId: Number(basketId), deviceId: Number(deviceId) } })
+        const device = await prisma.basketDevice.findUnique({ where: {deviceId_basketId: { basketId: Number(basketId), deviceId: Number(deviceId) }} })
         if (device) {
             return next(ApiError.badRequest('Item has added to basket already'))
         } else {
@@ -42,10 +42,13 @@ class BasketController {
         }
     }
     async changeCountOfProducts(req: Request, res: Response, next: NextFunction) {
-        const {countOfProducts} = req.body
+        const {countOfProducts, basketId} = req.body
         const {deviceId} = req.params
 
-        const basketDevice = await prisma.basketDevice.update({where: {deviceId: Number(deviceId)}, data: {
+        const basketDevice = await prisma.basketDevice.update({where: {deviceId_basketId: {
+            deviceId: Number(deviceId),
+            basketId: Number(basketId)
+        }}, data: {
             countOfProducts: Number(countOfProducts)
         }})
         return res.json(basketDevice)

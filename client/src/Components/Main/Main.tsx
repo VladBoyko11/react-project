@@ -57,6 +57,10 @@ const Main: React.FC<MainProps> = (props) => {
                 <Route path="/basket" element={
                     <BasketContainer />}
                 />
+                <Route path="/" element={
+                    <Login />
+                }
+                />
             </Routes>
             {props.toggleNotification ? <NotificationContainer /> : null}
             </ThemeProvider>
@@ -69,7 +73,6 @@ type mapStateToPropsType = {
     devices: Array<Device>
     toggleNotification: boolean
     message: string
-    store: any
 }
 
 const mapStateToProps = (state: RootState) => ({

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Device from "./Device";
 import FilterBrandItem from "./FilterBrandItem";
 import Pagination from "../Pagination/Pagination";
@@ -10,7 +10,8 @@ type DevicesPropsType = {
     devices: Array<DeviceType>
     brands: Array<Brand>
     totalPages: number
-    basketId?: number
+    basketId?: number,
+    selectedBrand: number,
     btnSelectBrand(brandId: number, toggleCheckboxBtn: boolean): void
     onPageChanged(page: number): void
 }
@@ -22,12 +23,12 @@ const Devices: React.FC<DevicesPropsType> = (props) => {
             display: 'flex',
             justifyContent: 'center' 
         }}>
-            <div className={'border-top border-end col-2'}>
+            <div className={'col-2'}>
                 <div>Brands</div>
                 <div className={`w-100`}>
                     {props.brands.map((brand: Brand) => {
                         key++
-                        return <FilterBrandItem btnSelectBrand={props.btnSelectBrand} key={key} brand={brand}/>
+                        return <FilterBrandItem selectedBrand={props.selectedBrand} btnSelectBrand={props.btnSelectBrand} key={key} brand={brand}/>
                     })}
                 </div>
             </div>

@@ -25,10 +25,7 @@ import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const Device: React.FC<DevicePropsType> = (props) => {
     const dispatch = useAppDispatch()
@@ -122,8 +119,8 @@ const Device: React.FC<DevicePropsType> = (props) => {
         //                 <FontAwesomeIcon className={style.deviceInBasketIcon} icon={faCircleCheck as IconProp}/> : null}
         //         </div>
         //     </div>
-        // </div>
-        <Card sx={{ maxWidth: 275, marginBottom: '1rem', marginX: '1rem' }}>
+        // </div> 
+        <Card sx={{ maxWidth: 275, marginBottom: '1rem', marginX: '1rem' }} >
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -132,7 +129,10 @@ const Device: React.FC<DevicePropsType> = (props) => {
                 }
                 title={props.device.name}
             />
-            <CardMedia
+            <CardMedia onClick={() => {
+                navigate(`/device/${props.device.id}`, { replace: true })
+            }}
+                sx={{ ":hover": { cursor: 'pointer' } }}
                 component="img"
                 height="194"
                 image={`http://localhost:5000/${props.device.img}`}
@@ -151,31 +151,31 @@ const Device: React.FC<DevicePropsType> = (props) => {
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites">
-                <div onClick={() => {
-                    if (props.basketId) {
-                        if (toggleBasketBtn) {
-                            if (props.device.id) props.deleteDeviceFromBasket({ basketId: props.basketId, deviceId: props.device.id, dispatch })
-                            setToggleBasketBtn(false)
-                        } else {
-                            if (props.device.id) {
-                                props.addDeviceToBasket({ basketId: props.basketId, deviceId: props.device.id })
-                                props.getOneDevice({ deviceId: props.device.id })
+                    <div onClick={() => {
+                        if (props.basketId) {
+                            if (toggleBasketBtn) {
+                                if (props.device.id) props.deleteDeviceFromBasket({ basketId: props.basketId, deviceId: props.device.id, dispatch })
+                                setToggleBasketBtn(false)
+                            } else {
+                                if (props.device.id) {
+                                    props.addDeviceToBasket({ basketId: props.basketId, deviceId: props.device.id })
+                                    props.getOneDevice({ deviceId: props.device.id })
+                                }
+                                setToggleBasketBtn(true)
                             }
-                            setToggleBasketBtn(true)
+                        } else {
+                            redirectToSomePage('/auth')
+                            props.setNotification('Вы не вошли в свой аккаунт, ввойдите перед покупкой', true)
+                            setTimeout(() => {
+                                props.setNotification('', false)
+                            }, 2000)
                         }
-                    } else {
-                        redirectToSomePage('/auth')
-                        props.setNotification('Вы не вошли в свой аккаунт, ввойдите перед покупкой', true)
-                        setTimeout(() => {
-                            props.setNotification('', false)
-                        }, 2000)
-                    }
 
-                }}>
-                    <FontAwesomeIcon className={style.shoppingBtnIcon} icon={faCartShopping as IconProp} />
-                    {toggleBasketBtn ?
-                        <FontAwesomeIcon className={style.deviceInBasketIcon} icon={faCircleCheck as IconProp} /> : null}
-                </div>
+                    }}>
+                        <FontAwesomeIcon className={style.shoppingBtnIcon} icon={faCartShopping as IconProp} />
+                        {toggleBasketBtn ?
+                            <FontAwesomeIcon className={style.deviceInBasketIcon} icon={faCircleCheck as IconProp} /> : null}
+                    </div>
                 </IconButton>
                 <ExpandMore
                     expand={expanded}
