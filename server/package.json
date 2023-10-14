@@ -18,7 +18,8 @@
     "jsonwebtoken": "^9.0.1",
     "pg": "^8.11.2",
     "pg-hstore": "^2.3.4",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "vercel": "^32.4.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
