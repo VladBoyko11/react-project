@@ -81,10 +81,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Basket_userId_key" ON "Basket"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Rating_userId_key" ON "Rating"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Rating_deviceId_key" ON "Rating"("deviceId");
+CREATE UNIQUE INDEX "Rating_userId_deviceId_key" ON "Rating"("userId", "deviceId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Device_name_key" ON "Device"("name");
@@ -94,12 +91,6 @@ CREATE UNIQUE INDEX "Type_name_key" ON "Type"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Brand_name_key" ON "Brand"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "BasketDevice_deviceId_key" ON "BasketDevice"("deviceId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "BasketDevice_basketId_key" ON "BasketDevice"("basketId");
 
 -- AddForeignKey
 ALTER TABLE "Basket" ADD CONSTRAINT "Basket_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
