@@ -21,16 +21,8 @@ app.use('/api', router)
 // Обработка ошибок, последний Middleware
 // app.use(errorHandler)
 
-const start = async () => {
-    try {
-        dotenv.config()
-        prisma.user.update({where: {id: 1}, data: {
-            role: "ADMIN"
-        }})
-        app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
-    } catch (e) {
-        console.log(e)
-    }
-}
+dotenv.config()
 
-start()
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+
+module.exports = app
