@@ -23,7 +23,7 @@
   },
   "vercel": {
     "builds": [
-      { "src": "./__webpack__/common.config.js", "use": "@vercel/webpack" }
+      { "src": "./__webpack__/prod.config.js", "use": "@vercel/webpack" }
     ]
   },
   "keywords": [],
