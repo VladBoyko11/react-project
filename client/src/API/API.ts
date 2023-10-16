@@ -2,7 +2,7 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { Basket, BasketDevice, Brand, Device, Rating, Type, User } from '../redux/types'
 
 const instance = axios.create({
-    baseURL: 'http://localhost:5000/'
+    baseURL: 'https://react-project-server-bmp4fl2ro-vladboyko11.vercel.app/'
 })
 
 const authInterceptor = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
